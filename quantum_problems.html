@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quantum Mechanics Problems</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    .stars {
+      direction: rtl;
+      unicode-bidi: bidi-override;
+      font-size: 1.5rem;
+    }
+    .stars input[type="radio"] {
+      display: none;
+    }
+    .stars label {
+      color: #ccc;
+      cursor: pointer;
+    }
+    .stars input:checked ~ label {
+      color: gold;
+    }
+    .stars label:hover,
+    .stars label:hover ~ label {
+      color: orange;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔬 Quantum Mechanics Problems</h1>
+
+  <div id="problems"></div>
+
+  <script>
+    const problemContainer = document.getElementById("problems");
+
+    for (let i = 1; i <= 10; i++) {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <h2>Problem ${i}</h2>
+        <p>Describe your QM problem statement here...</p>
+        <div class="stars" id="rating-${i}">
+          ${[5, 4, 3, 2, 1].map(n => `
+            <input type="radio" id="p${i}-star${n}" name="problem${i}" value="${n}">
+            <label for="p${i}-star${n}">★</label>
+          `).join('')}
+        </div>
+        <hr>
+      `;
+      problemContainer.appendChild(div);
+    }
+
+    // Load saved ratings
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+      const saved = localStorage.getItem(input.id);
+      if (saved === 'true') input.checked = true;
+
+      input.addEventListener('change', () => {
+        const group = document.getElementsByName(input.name);
+        group.forEach(i => localStorage.setItem(i.id, 'false'));
+        localStorage.setItem(input.id, 'true');
+      });
+    });
+  </script>
+</body>
+</html>
+
